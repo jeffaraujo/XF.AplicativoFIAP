@@ -15,7 +15,7 @@ namespace XF.AplicativoFIAP
 		{
 			InitializeComponent();
             InitializeApp();
-			MainPage = new NavigationPage(new View.ProfessorView() { BindingContext = App.ProfessorViewModel });
+			MainPage = new NavigationPage(new View.ProfessorView() { BindingContext = ProfessorViewModel });
 		}
 
         private void InitializeApp()

@@ -19,13 +19,22 @@ namespace XF.AplicativoFIAP.ViewModel
 
         private Professor professorSelecionado;
 
-        public string Nome { get { return ""; } }
-
+      
         public Professor ProfessorSelecionado
         {
             get { return professorSelecionado; }
             set { professorSelecionado = value as Professor; EventPropertyChanged(); }
         }
+
+        private string nome;
+
+        public string Nome
+        {
+            get { return nome; }
+            set { nome = value; EventPropertyChanged(); }
+        }
+
+
 
         private string pesquisaPorNome;
         public string PesquisaPorNome
@@ -98,11 +107,18 @@ namespace XF.AplicativoFIAP.ViewModel
         public async void Adicionar(Professor paramProfessor)
         {
             if ((paramProfessor == null) || (string.IsNullOrWhiteSpace(paramProfessor.Nome)))
+            {
                 await App.Current.MainPage.DisplayAlert("Atenção", "O campo nome é obrigatório", "OK");
+            }
             else if (await ProfessorRepository.PostProfessorSqlAzureAsync(paramProfessor) == true)
+            {
                 await App.Current.MainPage.Navigation.PopAsync();
+                Carregar();
+            }
             else
+            {
                 await App.Current.MainPage.DisplayAlert("Falhou", "Desculpe, ocorreu um erro inesperado =(", "OK");
+            }
         }
 
         public async void Editar()
@@ -134,8 +150,7 @@ namespace XF.AplicativoFIAP.ViewModel
         private void OnNovo()
         {
             App.ProfessorViewModel.ProfessorSelecionado = new Model.Professor();
-            App.Current.MainPage.Navigation.PushAsync(
-                new View.ProfessorView() { BindingContext = App.ProfessorViewModel });
+            Application.Current.MainPage.Navigation.PushAsync(new View.NovoProfessorView() { BindingContext = App.ProfessorViewModel });
         }
 
 
